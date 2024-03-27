@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Math Test</title>
+    <style>
+        #equation { font-size: 24px; margin-bottom: 20px; }
+        input { font-size: 18px; margin: 5px; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        #timer {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff6347;
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 20px;
+        }
+        #score {
+            font-size: 36px;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 20px;
+        }
+        #eq1, #eq2 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        input {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 36px;
+            margin: 5px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }    
+        input:focus {
+            border-color: #66afe9;
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+        }
+        #alertBox {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d9534f;
+            margin-top: 10px;
+        }
+        .equation-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">120</div>
+    <div id="score">0</div>
+    <div id="eq1"></div>
+    <div id="eq2"></div>
+    <input type="number" id="xValue" placeholder="x">
+    <input type="number" id="yValue" placeholder="y">
+    <div id="alertBox"></div>
+
+    <script>
+        let timer = 120;
+        let score = 0;
+        const timerElement = document.getElementById('timer');
+        const xInput = document.getElementById('xValue');
+        const yInput = document.getElementById('yValue');
+        let a = 0, b = 0, c = 0, n = 0, m = 0, s = 0, x = 0, y = 0;
+
+        function submitAnswer() {
+            let userX = parseInt(xInput.value);
+            let userY = parseInt(yInput.value);
+            console.log(userX, userY);
+            if (userX === null || userY === null) {
+                return;
+            }
+            if (Math.abs(x - userX) <= 1e-3 && Math.abs(y - userY) <= 1e-3) {
+                score++;
+                let scoreElement = document.getElementById('score');
+                scoreElement.textContent = score;
+                alertBox.textContent = '';
+                console.log('returning right');
+            } else {
+                let alertBox = document.getElementById('alertBox');
+                alertBox.textContent = 'THINKING...';
+                setTimeout(() => {
+                    alertBox.textContent = 'INCORRECT';
+                }, 1000); // Delay of 1 second (1000 milliseconds)
+                console.log('returning');
+                return;
+            }
+
+            generateEquation(); // Generate new equation
+            xInput.value = ''; // Clear input fields
+            yInput.value = '';
+            xInput.focus(); // Focus on the first input field
+        }
+
+    function generateEquation() {
+            console.log("generating equations...");
+            x = Math.floor(Math.random() * 21) - 10;
+            y = Math.floor(Math.random() * 21) - 10;
+
+            a = Math.floor(Math.random() * 21) - 10;
+            b = Math.floor(Math.random() * 21) - 10;
+            n = Math.floor(Math.random() * 21) - 10;
+            m = Math.floor(Math.random() * 21) - 10;
+
+            c = a * x + b * y;
+            s = n * x + m * y;
+
+            eq1.textContent = `${a}x + ${b}y = ${c}`;
+            eq2.textContent = `${n}x + ${m}y = ${s}`;
+        }
+
+        function updateTimer() {
+            if(timer > 0) {
+                timer--;
+                timerElement.textContent = timer;
+            } else {
+                alert("Time's up!");
+                clearInterval(timerInterval);
+                xInput.disabled = true;
+                yInput.disabled = true;
+                alert(`Score: ${score}`)
+            }
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        function setupInputHandlers() {
+            xInput.addEventListener('keyup', function(event) {
+                if (event.key === "Enter") {
+                    submitAnswer();
+                }
+            });
+
+            yInput.addEventListener('keyup', function(event) {
+                if (event.key === "Enter") {
+                    submitAnswer();
+                }
+            });
+        }
+
+        function init() {
+            setupInputHandlers();
+            generateEquation();
+            xInput.focus();
+        }
+
+        init();
+    </script>
+</body>
+</html>
