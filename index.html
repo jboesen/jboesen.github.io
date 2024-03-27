@@ -88,7 +88,6 @@
         function submitAnswer() {
             let userX = parseInt(xInput.value);
             let userY = parseInt(yInput.value);
-            console.log(userX, userY);
             if (userX === null || userY === null) {
                 return;
             }
@@ -97,14 +96,12 @@
                 let scoreElement = document.getElementById('score');
                 scoreElement.textContent = score;
                 alertBox.textContent = '';
-                console.log('returning right');
             } else {
                 let alertBox = document.getElementById('alertBox');
                 alertBox.textContent = 'THINKING...';
                 setTimeout(() => {
                     alertBox.textContent = 'INCORRECT';
-                }, 1000); // Delay of 1 second (1000 milliseconds)
-                console.log('returning');
+                }, 100); // Delay of 1 second (1000 milliseconds)
                 return;
             }
 
@@ -115,14 +112,13 @@
         }
 
     function generateEquation() {
-            console.log("generating equations...");
-            x = Math.floor(Math.random() * 21) - 10;
-            y = Math.floor(Math.random() * 21) - 10;
+            x = Math.floor(Math.random() * 10) - 10;
+            y = Math.floor(Math.random() * 10) - 10;
 
-            a = Math.floor(Math.random() * 21) - 10;
-            b = Math.floor(Math.random() * 21) - 10;
-            n = Math.floor(Math.random() * 21) - 10;
-            m = Math.floor(Math.random() * 21) - 10;
+            a = Math.floor(Math.random() * 10) - 10;
+            b = Math.floor(Math.random() * 10) - 10;
+            n = Math.floor(Math.random() * 10) - 10;
+            m = Math.floor(Math.random() * 10) - 10;
 
             c = a * x + b * y;
             s = n * x + m * y;
